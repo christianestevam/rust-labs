@@ -1,29 +1,28 @@
-fn quick_sort <T: Ord>(arr: &mut [T]) {
+fn quicksort<T: Ord>(arr: &mut [T]) {
     if arr.len() <= 1 {
         return;
     }
-    let pivot = arr.len() / 2;
-    let mut left = 0;
-    let mut right = arr.len() - 1;
-    while left <= right {
-        while arr[left] < arr[pivot] {
-            left += 1;
-        }
-        while arr[right] > arr[pivot] {
-            right -= 1;
-        }
-        if left <= right {
-            arr.swap(left, right);
-            left += 1;
-            right -= 1;
+
+    let pivot = partition(arr);
+    let (left, right) = arr.split_at_mut(pivot);
+    quicksort(left);
+    quicksort(&mut right[1..]);
+}
+
+fn partition<T: Ord>(arr: &mut [T]) -> usize {
+    let mut i = 0;
+    for j in 1..arr.len() {
+        if arr[j] < arr[0] {
+            i += 1;
+            arr.swap(i, j);
         }
     }
-    quick_sort(&mut arr[..pivot]);
-    quick_sort(&mut arr[pivot..]);
+    arr.swap(0, i);
+    i
 }
 
 fn main() {
-    let mut arr = [5, 2, 4, 6, 1, 3];
-    quick_sort(&mut arr);
+    let mut arr = [5, 8, 1, 2, 7, 3, 6, 9, 4, 10];
+    quicksort(&mut arr);
     println!("{:?}", arr);
 }

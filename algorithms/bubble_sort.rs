@@ -1,5 +1,4 @@
 // This is a bubble sort algorithm implementation in Rust
-
 fn bubble_sort <T: Ord>(arr: &mut [T]) {
     let mut swapped = true;
     while swapped {
